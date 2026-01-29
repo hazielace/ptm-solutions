@@ -1,0 +1,63 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- EFECTOS NEÓN (Adaptados para Claro/Oscuro) --- */
+
+/* En modo claro, el "neón" es más un color vibrante con menos glow difuso para mantener legibilidad */
+.neon-text-purple { /* Mantenemos este suave para claro */
+     text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+}
+.neon-text-blue { /* Añadido para el modo claro */
+     text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+}
+.neon-text-pink { /* Añadido para el modo claro */
+     text-shadow: 0 0 10px rgba(255, 105, 180, 0.3); /* Nuevo rosa */
+}
+
+
+/* En modo oscuro, el glow es intenso con el nuevo azul */
+.dark .neon-text-blue {
+    text-shadow: 0 0 5px var(--tw-color-custom-blue-neon), 0 0 10px var(--tw-color-custom-blue-neon), 0 0 20px #0066CC;
+}
+.dark .neon-text-purple {
+     text-shadow: 0 0 5px var(--tw-color-custom-purple-neon), 0 0 10px var(--tw-color-custom-purple-neon), 0 0 20px var(--tw-color-custom-purple-dark);
+}
+.dark .neon-text-pink {
+     text-shadow: 0 0 5px var(--tw-color-custom-pink-neon), 0 0 10px var(--tw-color-custom-pink-neon), 0 0 20px var(--tw-color-custom-pink-dark);
+}
+
+/* Cajas Neón */
+.neon-box-blue:hover {
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.5); /* Usa el nuevo azul para el hover */
+}
+.dark .neon-box-blue:hover {
+    box-shadow: 0 0 10px var(--tw-color-custom-blue-neon), inset 0 0 10px rgba(0, 191, 255, 0.2);
+}
+
+.neon-box-purple:hover {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+.dark .neon-box-purple:hover {
+    box-shadow: 0 0 10px var(--tw-color-custom-purple-neon), inset 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+.neon-box-pink:hover {
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); /* Usa el nuevo rosa para el hover */
+}
+.dark .neon-box-pink:hover {
+    box-shadow: 0 0 10px var(--tw-color-custom-pink-neon), inset 0 0 10px rgba(255, 105, 180, 0.2);
+}
+
+/* Background Grids */
+.grid-bg {
+    background-size: 50px 50px;
+    background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+.dark .grid-bg {
+    background-image: 
+        linear-gradient(to right, rgba(20, 20, 20, 0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(20, 20, 20, 0.5) 1px, transparent 1px);
+}
