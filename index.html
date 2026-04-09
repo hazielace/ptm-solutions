@@ -159,15 +159,24 @@
 
     <!-- Hero Section -->
     <section id="inicio" class="relative pt-32 pb-20 sm:pt-48 sm:pb-32 overflow-hidden min-h-screen flex items-center">
-        <!-- Decorative glowing orbs (Opacity adjusted for light mode) -->
-        <div
-            class="absolute top-1/4 left-1/4 w-96 h-96 bg-custom-purple-dark/10 dark:bg-custom-purple-dark/20 rounded-full filter blur-[120px] -z-10 animate-pulse">
-        </div>
-        <div
-            class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-custom-blue-dark/10 dark:bg-custom-blue-dark/20 rounded-full filter blur-[120px] -z-10">
+
+        <!-- Animated network canvas -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+        <!-- Subtle grid overlay -->
+        <div class="absolute inset-0 z-0"
+            style="background-image: linear-gradient(rgba(162,89,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(162,89,255,0.04) 1px, transparent 1px); background-size: 60px 60px;">
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <!-- Decorative glowing orbs -->
+        <div
+            class="absolute top-1/4 left-1/4 w-96 h-96 bg-custom-purple-dark/10 dark:bg-custom-purple-dark/20 rounded-full filter blur-[120px] z-0 animate-pulse">
+        </div>
+        <div
+            class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-custom-blue-dark/10 dark:bg-custom-blue-dark/20 rounded-full filter blur-[120px] z-0">
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2
                 class="text-custom-blue-dark dark:text-custom-blue-neon font-mono text-sm tracking-widest mb-4 uppercase transition-colors duration-500">
                 &lt; Prime Tech Makers /&gt;
@@ -189,17 +198,63 @@
             <div class="mt-12 flex justify-center">
                 <a href="https://wa.me/?text=Hola%20PTM%20Solutions%2C%20quiero%20conversar%20sobre%20un%20proyecto%20web."
                     target="_blank" rel="noopener"
-                    class="group inline-block p-[2px] rounded-full bg-gradient-to-r from-custom-blue-dark via-custom-purple-dark to-custom-pink-dark transition-all duration-300 hover:opacity-100">
+                    class="group inline-block p-[2px] rounded-full bg-gradient-to-r from-custom-blue-dark via-custom-purple-dark to-custom-pink-dark transition-all duration-300 hover:scale-105 active:scale-95">
                     <span class="block rounded-full bg-white dark:bg-black px-12 py-5 text-lg font-bold">
                         <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-custom-blue-dark via-custom-purple-dark to-custom-pink-dark dark:from-custom-blue-neon dark:via-custom-purple-neon dark:to-custom-pink-neon group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
-                            CONVERSAR AHORA
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-custom-blue-dark via-custom-purple-dark to-custom-pink-dark dark:from-custom-blue-neon dark:via-custom-purple-neon dark:to-custom-pink-neon">
+                            Empezar mi proyecto
                         </span>
                     </span>
                 </a>
             </div>
+
+            <!-- Service tag buttons -->
+            <div class="mt-8 flex flex-wrap justify-center gap-3">
+                <a href="servicio-desarrollo-web.html"
+                    class="px-5 py-2.5 rounded-full text-sm font-medium border border-gray-300 dark:border-white/15 text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 backdrop-blur-sm hover:border-[#4f8ef7]/60 hover:text-[#4f8ef7] hover:bg-[#4f8ef7]/5 transition-all duration-200">
+                    Desarrollo Web
+                </a>
+                <a href="servicio-tiendas-virtuales.html"
+                    class="px-5 py-2.5 rounded-full text-sm font-medium border border-gray-300 dark:border-white/15 text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 backdrop-blur-sm hover:border-[#a259ff]/60 hover:text-[#a259ff] hover:bg-[#a259ff]/5 transition-all duration-200">
+                    Tiendas Online
+                </a>
+                <a href="servicio-sistemas-web.html"
+                    class="px-5 py-2.5 rounded-full text-sm font-medium border border-gray-300 dark:border-white/15 text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 backdrop-blur-sm hover:border-[#f43fa0]/60 hover:text-[#f43fa0] hover:bg-[#f43fa0]/5 transition-all duration-200">
+                    Sistemas Web
+                </a>
+                <a href="servicio-landing-pages.html"
+                    class="px-5 py-2.5 rounded-full text-sm font-medium border border-gray-300 dark:border-white/15 text-gray-600 dark:text-gray-300 bg-white/60 dark:bg-white/5 backdrop-blur-sm hover:border-[#4f8ef7]/60 hover:text-[#4f8ef7] hover:bg-[#4f8ef7]/5 transition-all duration-200">
+                    Landing Pages
+                </a>
+            </div>
         </div>
     </section>
+
+    <script>
+            (function () {
+                var c = document.getElementById('hero-canvas'); if (!c) return;
+                var x = c.getContext('2d'), W, H, P, id, N = 60, D = 150;
+                var darkC = ['rgba(162,89,255,', 'rgba(79,142,247,', 'rgba(244,63,160,'];
+                var lightC = ['rgba(100,50,200,', 'rgba(40,100,220,', 'rgba(200,40,130,'];
+                function isDark() { return document.documentElement.classList.contains('dark') }
+                function r() { W = c.width = c.offsetWidth; H = c.height = c.offsetHeight }
+                function rn(a, b) { return a + Math.random() * (b - a) }
+                function init() { var C = isDark() ? darkC : lightC; P = []; for (var i = 0; i < N; i++)P.push({ x: Math.random() * W, y: Math.random() * H, vx: rn(-.25, .25), vy: rn(-.25, .25), s: rn(1.5, 3), c: C[Math.floor(Math.random() * 3)] }) }
+                function draw() {
+                    x.clearRect(0, 0, W, H);
+                    var dk = isDark(), lineA = dk ? .3 : .45, dotA = dk ? '0.65)' : '0.8)', lineC = dk ? 'rgba(162,89,255,' : 'rgba(100,50,200,';
+                    for (var i = 0; i < P.length; i++)for (var j = i + 1; j < P.length; j++) { var dx = P[i].x - P[j].x, dy = P[i].y - P[j].y, d = Math.hypot(dx, dy); if (d < D) { x.beginPath(); x.moveTo(P[i].x, P[i].y); x.lineTo(P[j].x, P[j].y); x.strokeStyle = lineC + (1 - d / D) * lineA + ')'; x.lineWidth = dk ? .8 : 1; x.stroke() } }
+                    P.forEach(function (p) { x.beginPath(); x.arc(p.x, p.y, p.s, 0, 6.28); x.fillStyle = p.c + dotA; x.fill(); p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1 });
+                    id = requestAnimationFrame(draw)
+                }
+                function go() { r(); init(); if (id) cancelAnimationFrame(id); draw() }
+                window.addEventListener('resize', function () { r(); init() });
+                // Re-init colors when theme changes
+                var obs = new MutationObserver(function () { init() });
+                obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+                document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', go) : go();
+            })();
+    </script>
 
     <!-- Nosotros / Por qué elegirnos -->
     <section id="nosotros" class="py-24 relative overflow-hidden transition-colors duration-500">
@@ -231,49 +286,59 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-5">
 
                 <!-- Card 1 -->
-                <div class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#f43fa0] via-[#a259ff] to-[#4f8ef7] hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div
+                    class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#f43fa0] via-[#a259ff] to-[#4f8ef7] hover:scale-[1.02] transition-all duration-300 shadow-lg">
                     <div class="h-full rounded-2xl bg-white dark:bg-[#0d0814] p-8 text-center">
                         <div class="text-4xl mb-5">🎨</div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Diseño moderno</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Tu negocio se verá profesional y confiable desde el primer vistazo.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Tu negocio se verá
+                            profesional y confiable desde el primer vistazo.</p>
                     </div>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#a259ff] via-[#4f8ef7] to-[#f43fa0] hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div
+                    class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#a259ff] via-[#4f8ef7] to-[#f43fa0] hover:scale-[1.02] transition-all duration-300 shadow-lg">
                     <div class="h-full rounded-2xl bg-white dark:bg-[#0d0814] p-8 text-center">
                         <div class="text-4xl mb-5">🧩</div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Soluciones a medida</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Desarrollamos exactamente lo que necesitas, sin plantillas genéricas.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Desarrollamos exactamente lo
+                            que necesitas, sin plantillas genéricas.</p>
                     </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#4f8ef7] via-[#a259ff] to-[#f43fa0] hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div
+                    class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#4f8ef7] via-[#a259ff] to-[#f43fa0] hover:scale-[1.02] transition-all duration-300 shadow-lg">
                     <div class="h-full rounded-2xl bg-white dark:bg-[#0d0814] p-8 text-center">
                         <div class="text-4xl mb-5">⚡</div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Tecnología actual</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Usamos herramientas modernas para que tu sistema sea rápido y escalable.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Usamos herramientas modernas
+                            para que tu sistema sea rápido y escalable.</p>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 md:max-w-2xl md:mx-auto">
                 <!-- Card 4 -->
-                <div class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#f43fa0] to-[#a259ff] hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div
+                    class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#f43fa0] to-[#a259ff] hover:scale-[1.02] transition-all duration-300 shadow-lg">
                     <div class="h-full rounded-2xl bg-white dark:bg-[#0d0814] p-8 text-center">
                         <div class="text-4xl mb-5">🛠️</div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Soporte continuo</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Te acompañamos incluso después de la entrega para mejoras, soporte y evolución de tu proyecto.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Te acompañamos incluso
+                            después de la entrega para mejoras, soporte y evolución de tu proyecto.</p>
                     </div>
                 </div>
 
                 <!-- Card 5 -->
-                <div class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#a259ff] to-[#4f8ef7] hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                <div
+                    class="group p-[1px] rounded-2xl bg-gradient-to-br from-[#a259ff] to-[#4f8ef7] hover:scale-[1.02] transition-all duration-300 shadow-lg">
                     <div class="h-full rounded-2xl bg-white dark:bg-[#0d0814] p-8 text-center">
                         <div class="text-4xl mb-5">🚀</div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Proyectos reales</h3>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Creamos soluciones que generan impacto real en la presencia y funcionamiento de tu negocio.</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Creamos soluciones que
+                            generan impacto real en la presencia y funcionamiento de tu negocio.</p>
                     </div>
                 </div>
             </div>
@@ -499,7 +564,9 @@
                             Desarrollo Web</h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Sitios modernos y
                             optimizados para posicionar tu negocio.</p>
-                        <a href="servicio-desarrollo-web.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#4f8ef7] hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-desarrollo-web.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#4f8ef7] hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
 
@@ -526,7 +593,9 @@
                             Tiendas Virtuales</h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Ecommerce completos
                             con pagos y gestión.</p>
-                        <a href="servicio-tiendas-virtuales.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#a259ff] hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-tiendas-virtuales.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#a259ff] hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
 
@@ -555,7 +624,9 @@
                             Sistemas Web</h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Plataformas
                             empresariales a medida.</p>
-                        <a href="servicio-sistemas-web.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#f43fa0] hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-sistemas-web.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#f43fa0] hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
 
@@ -581,7 +652,9 @@
                             Landing Pages</h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Páginas diseñadas
                             para convertir clientes.</p>
-                        <a href="servicio-landing-pages.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-amber-500 hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-landing-pages.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-amber-500 hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
 
@@ -608,7 +681,9 @@
                             Aplicaciones Móviles</h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Apps nativas e
                             híbridas para iOS y Android adaptadas a tu negocio.</p>
-                        <a href="servicio-apps-moviles.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#a259ff] hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-apps-moviles.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#a259ff] hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
 
@@ -622,7 +697,8 @@
                         <div class="flex justify-center mb-6">
                             <div
                                 class="w-16 h-16 bg-custom-pink-dark/10 dark:bg-custom-pink-dark/20 rounded-xl flex items-center justify-center border border-custom-pink-dark/30 group-hover:shadow-[0_0_15px_rgba(255,105,180,0.3)] transition-all duration-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-custom-pink-dark dark:text-custom-pink-neon" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-8 w-8 text-custom-pink-dark dark:text-custom-pink-neon" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
@@ -635,7 +711,9 @@
                                 class="text-custom-pink-dark dark:text-custom-pink-neon">(SEO)</span></h3>
                         <p class="text-gray-600 dark:text-gray-400 transition-colors duration-500">Estrategias para que
                             tu negocio aparezca primero en los resultados de búsqueda.</p>
-                        <a href="servicio-seo.html" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#f43fa0] hover:gap-2 transition-all duration-200">Ver más <span>→</span></a>
+                        <a href="servicio-seo.html"
+                            class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#f43fa0] hover:gap-2 transition-all duration-200">Ver
+                            más <span>→</span></a>
                     </div>
                 </div>
             </div>
@@ -681,15 +759,12 @@
                         <span class="w-3 h-3 rounded-full bg-green-400"></span>
                         <div
                             class="ml-2 flex-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-400 dark:text-gray-500 px-2 py-0.5 truncate">
-                            proyecto1.com</div>
+                            veterinaria-maskoteka.com</div>
                     </div>
-                    <!-- Preview image placeholder -->
-                    <div
-                        class="relative h-48 bg-gradient-to-br from-custom-blue-dark/20 via-custom-purple-dark/20 to-custom-pink-dark/20 dark:from-custom-blue-dark/30 dark:via-custom-purple-dark/30 dark:to-custom-pink-dark/30 flex items-center justify-center overflow-hidden">
-                        <div class="text-center">
-                            <div class="text-5xl mb-2">🛒</div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Vista previa próximamente</span>
-                        </div>
+                    <!-- Preview image -->
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="img/VterinariaMaskoteka.png" alt="Clínica Veterinaria Maskoteka"
+                            class="w-full h-full object-cover object-top">
                         <div
                             class="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 to-transparent opacity-30">
                         </div>
@@ -700,9 +775,14 @@
                             class="inline-block text-xs font-semibold text-custom-blue-dark dark:text-custom-blue-neon bg-custom-blue-dark/10 dark:bg-custom-blue-neon/10 px-3 py-1 rounded-full mb-3 transition-colors duration-500">Tienda
                             Online</span>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-500">
-                            Proyecto 1</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">E-commerce
-                            completo con catálogo de productos, carrito de compras y pagos integrados.</p>
+                            Clínica Veterinaria Maskoteka</h3>
+                        <!-- <p class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">E-commerce
+                            completo con catálogo de productos, carrito de compras y pagos integrados.
+                            Plataforma digital para veterinaria con agendamiento de citas, gestión de pacientes y tienda
+                            online integrada.</p> -->
+                        <p class="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-500">
+                            Plataforma digital para veterinaria con agendamiento de citas y tienda
+                            online integrada.</p>
                         <a href="#contacto"
                             class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-custom-blue-dark dark:text-custom-blue-neon group-hover:gap-3 transition-all duration-300">
                             Ver proyecto
@@ -1000,62 +1080,64 @@
         <!-- Background glows -->
         <div class="absolute inset-0 -z-10">
             <div
-                class="absolute top-1/2 left-1/4 w-80 h-80 bg-[#4f8ef7]/10 dark:bg-[#4f8ef7]/20 rounded-full filter blur-[100px] -translate-y-1/2">
+                class="absolute top-1/2 left-1/4 w-80 h-80 bg-[#4f8ef7]/15 dark:bg-[#4f8ef7]/20 rounded-full filter blur-[100px] -translate-y-1/2">
             </div>
             <div
-                class="absolute top-1/2 right-1/4 w-80 h-80 bg-[#f43fa0]/10 dark:bg-[#f43fa0]/20 rounded-full filter blur-[100px] -translate-y-1/2">
+                class="absolute top-1/2 right-1/4 w-80 h-80 bg-[#f43fa0]/15 dark:bg-[#f43fa0]/20 rounded-full filter blur-[100px] -translate-y-1/2">
             </div>
         </div>
 
         <div class="max-w-4xl mx-auto px-4">
-            <!-- Adaptive card: light = white card, dark = dark card -->
-            <div class="relative rounded-3xl
-                bg-white dark:bg-[#0e0e12]
-                border border-gray-200 dark:border-white/10
-                p-12 md:p-16 text-center shadow-2xl overflow-hidden
-                transition-colors duration-500">
+            <!-- Gradient border wrapper -->
+            <div class="p-[1.5px] rounded-3xl bg-gradient-to-r from-[#4f8ef7] via-[#a259ff] to-[#f43fa0]
+                shadow-[0_0_40px_rgba(162,89,255,0.2)] dark:shadow-[0_0_60px_rgba(162,89,255,0.3)]">
+                <div class="relative rounded-3xl
+                    bg-white dark:bg-[#0e0e12]
+                    p-12 md:p-16 text-center overflow-hidden
+                    transition-colors duration-500">
 
-                <!-- Inner top line -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px
-                    bg-gradient-to-r from-transparent via-gray-300 dark:via-white/20 to-transparent
-                    transition-colors duration-500"></div>
+                    <!-- Inner glow top -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px
+                        bg-gradient-to-r from-transparent via-[#a259ff]/60 to-transparent"></div>
 
-                <!-- Label -->
-                <p class="text-xs font-semibold tracking-[0.25em] uppercase
-                    text-transparent bg-clip-text bg-gradient-to-r from-[#a259ff] to-[#f43fa0] mb-6">
-                    Empieza ahora
-                </p>
+                    <!-- Label -->
+                    <p class="text-xs font-semibold tracking-[0.25em] uppercase
+                        text-transparent bg-clip-text bg-gradient-to-r from-[#a259ff] to-[#f43fa0] mb-6">
+                        Empieza ahora
+                    </p>
 
-                <!-- Heading -->
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight
-                    text-gray-900 dark:text-white transition-colors duration-500">
-                    Lleva tu idea a una<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#a259ff] to-[#c084fc]">
-                        solución digital real
-                    </span>
-                </h2>
+                    <!-- Heading -->
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight
+                        text-gray-900 dark:text-white transition-colors duration-500">
+                        Lleva tu idea a una<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#a259ff] to-[#f43fa0]">
+                            solución digital real
+                        </span>
+                    </h2>
 
-                <!-- Subtitle -->
-                <p class="text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed
-                    text-gray-500 dark:text-gray-400 transition-colors duration-500">
-                    Te ayudamos a convertir tu idea en una web, sistema o tienda lista para vender,
-                    escalar y funcionar desde el primer día.
-                </p>
+                    <!-- Subtitle -->
+                    <p class="text-base md:text-lg mb-10 max-w-xl mx-auto leading-relaxed
+                        text-gray-500 dark:text-gray-400 transition-colors duration-500">
+                        Te ayudamos a convertir tu idea en una web, sistema o tienda lista para vender,
+                        escalar y funcionar desde el primer día.
+                    </p>
 
-                <!-- CTA Button -->
-                <a href="https://wa.me/?text=Hola%20PTM%20Solutions%2C%20quiero%20cotizar%20un%20proyecto."
-                    target="_blank" rel="noopener" class="inline-block px-10 py-4 rounded-full bg-gradient-to-r from-[#4f8ef7] via-[#a259ff] to-[#f43fa0]
-                    text-white text-base font-bold
-                    shadow-[0_0_30px_rgba(162,89,255,0.35)] dark:shadow-[0_0_30px_rgba(162,89,255,0.5)]
-                    hover:shadow-[0_0_50px_rgba(162,89,255,0.55)] dark:hover:shadow-[0_0_50px_rgba(162,89,255,0.75)]
-                    hover:scale-105 active:scale-95 transition-all duration-300">
-                    Cotizar proyecto
-                </a>
+                    <!-- CTA Button -->
+                    <a href="https://wa.me/?text=Hola%20PTM%20Solutions%2C%20quiero%20cotizar%20un%20proyecto."
+                        target="_blank" rel="noopener" class="inline-block px-10 py-4 rounded-full
+                        bg-gradient-to-r from-[#4f8ef7] via-[#a259ff] to-[#f43fa0]
+                        text-white text-base font-bold
+                        shadow-[0_4px_24px_rgba(162,89,255,0.4)]
+                        hover:shadow-[0_6px_36px_rgba(162,89,255,0.6)]
+                        hover:scale-105 active:scale-95 transition-all duration-300">
+                        Cotizar proyecto
+                    </a>
 
-                <!-- Trust text -->
-                <p class="mt-6 text-sm text-gray-400 dark:text-gray-600 transition-colors duration-500">
-                    Respuesta rápida &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Asesoría gratuita
-                </p>
+                    <!-- Trust text -->
+                    <p class="mt-6 text-sm text-gray-400 dark:text-gray-500 transition-colors duration-500">
+                        Respuesta rápida &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Asesoría gratuita
+                    </p>
+                </div>
             </div>
         </div>
     </section>
@@ -1139,23 +1221,24 @@
                         </div>
                     </div>
 
-                    <!-- Horario -->
+                    <!-- Cotización y Asesoría -->
                     <div
                         class="flex items-start gap-4 p-5 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-sm transition-colors duration-500">
                         <div
                             class="w-11 h-11 flex-shrink-0 rounded-xl bg-[#a259ff]/10 dark:bg-[#a259ff]/15 flex items-center justify-center border border-[#a259ff]/20">
                             <svg class="w-5 h-5 text-[#a259ff]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                         </div>
                         <div>
                             <p
                                 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-1">
-                                Horario</p>
-                            <p class="text-gray-800 dark:text-white font-medium transition-colors duration-500">Lun –
-                                Vie: 9 am – 6 pm</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Zona horaria: América/Bogotá</p>
+                                Cotización y Asesoría</p>
+                            <p class="text-gray-800 dark:text-white font-medium transition-colors duration-500">100%
+                                gratuita y sin compromiso</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Te ayudamos a definir la mejor solución
+                                para tu proyecto</p>
                         </div>
                     </div>
                 </div>
@@ -1294,6 +1377,14 @@
                                     d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
                             </svg>
                         </a>
+                        <a href="https://www.instagram.com/ptm.solutions" target="_blank" rel="noopener"
+                            aria-label="Instagram"
+                            class="w-9 h-9 rounded-full flex items-center justify-center bg-gray-200 dark:bg-white/10 hover:bg-[#E1306C]/20 hover:text-[#E1306C] text-gray-500 dark:text-gray-400 transition-all duration-300">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
                         <a href="https://wa.me/?text=Hola%20PTM%20Solutions" target="_blank" rel="noopener"
                             aria-label="WhatsApp"
                             class="w-9 h-9 rounded-full flex items-center justify-center bg-gray-200 dark:bg-white/10 hover:bg-green-500/20 hover:text-green-500 text-gray-500 dark:text-gray-400 transition-all duration-300">
@@ -1335,19 +1426,19 @@
                         class="text-xs font-bold uppercase tracking-widest text-gray-900 dark:text-white mb-5 transition-colors duration-500">
                         Servicios</p>
                     <ul class="space-y-3">
-                        <li><a href="#servicios"
+                        <li><a href="servicio-desarrollo-web.html"
                                 class="text-gray-500 dark:text-gray-400 hover:text-[#4f8ef7] dark:hover:text-[#4f8ef7] transition-colors duration-300">Desarrollo
                                 Web</a></li>
-                        <li><a href="#servicios"
+                        <li><a href="servicio-tiendas-virtuales.html"
                                 class="text-gray-500 dark:text-gray-400 hover:text-[#4f8ef7] dark:hover:text-[#4f8ef7] transition-colors duration-300">Tiendas
                                 Virtuales</a></li>
-                        <li><a href="#servicios"
+                        <li><a href="servicio-sistemas-web.html"
                                 class="text-gray-500 dark:text-gray-400 hover:text-[#4f8ef7] dark:hover:text-[#4f8ef7] transition-colors duration-300">Sistemas
                                 Web</a></li>
-                        <li><a href="#servicios"
+                        <li><a href="servicio-landing-pages.html"
                                 class="text-gray-500 dark:text-gray-400 hover:text-[#4f8ef7] dark:hover:text-[#4f8ef7] transition-colors duration-300">Landing
                                 Pages</a></li>
-                        <li><a href="#servicios"
+                        <li><a href="servicio-seo.html"
                                 class="text-gray-500 dark:text-gray-400 hover:text-[#4f8ef7] dark:hover:text-[#4f8ef7] transition-colors duration-300">Posicionamiento
                                 SEO</a></li>
                     </ul>
@@ -1377,15 +1468,6 @@
                             <a href="https://wa.me/?text=Hola%20PTM%20Solutions" target="_blank" rel="noopener"
                                 class="text-gray-500 dark:text-gray-400 hover:text-green-500 transition-colors duration-300">Escríbenos
                                 por WhatsApp</a>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-[#f43fa0]" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="text-gray-500 dark:text-gray-400 transition-colors duration-500">Lun – Vie: 9
-                                am – 6 pm<br><span class="text-xs">América/Bogotá</span></span>
                         </li>
                     </ul>
                 </div>
